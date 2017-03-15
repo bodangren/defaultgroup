@@ -50,6 +50,9 @@ class HookManager {
 
     /**
      * Connect hooks
+     *
+     * TODO:
+     *  IMPORTANT! make this work with user_external app!
      */
 	public function setup() {
         Util::connectHook('OC_User',
