@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>defaultgroup</id>
+    <name>Default Group</name>
+    <summary>This app will add new users to specified groups.</summary>
+    <description>Automatically add new users to specified groups.</description>
+    <licence>agpl</licence>
+    <author mail="nextcloud@stibila.eu" >Ján Stibila</author>
+    <version>1.0.0</version>
+    <namespace>DefaultGroup</namespace>
+    <types>
+        <prevent_group_restriction/>
+    </types>
+    <category>tools</category>
+    <dependencies>
+        <owncloud min-version="9.2"/>
+        <nextcloud min-version="11" max-version="11"/>
+    </dependencies>
+    <settings>
+        <admin-section>OCA\DefaultGroup\Settings\AdminSection</admin-section>
+        <admin>OCA\DefaultGroup\Settings\AdminSettings</admin>
+    </settings>
+</info>
