@@ -50,17 +50,43 @@ class HookManager {
 
     /**
      * Connect hooks
-     *
-     * TODO:
-     *  IMPORTANT! make this work with user_external app!
      */
 	public function setup() {
         Util::connectHook('OC_User',
 			'post_createUser',
 			$this,
 			'postCreateUser');
-	}
 
+        Util::connectHook('OC_User',
+            'post_login',
+            $this,
+            'postLoginUser');
+    }
+
+
+    /**
+     * We need to add user to default groups on every successful login, because hooks
+     * doesn't work when creating users (first login) with user_external app.
+     *
+     * @param array $params
+     */
+	public function postLoginUser($params) {
+        $groupNames = json_decode( $this->config->getAppValue("DefaultGroup", "default_groups") );
+
+		$user = $this->userManager->get($params['uid']);
+        foreach($groupNames as $groupName)
+        {
+          $groups = $this->groupManager->search($groupName, $limit = null, $offset = null);
+          foreach($groups as $group)
+          {
+            if($group->getGID() === $groupName)
+            {
+              $group->addUser($user);
+            }
+          }
+        }
+    }
+  
     /**
      * @param array $params
      */

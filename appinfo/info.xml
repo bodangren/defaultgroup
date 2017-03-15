@@ -7,7 +7,7 @@
     <description>Automatically add new users to specified groups.</description>
     <licence>agpl</licence>
     <author mail="nextcloud@stibila.eu" >Ján Stibila</author>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <namespace>DefaultGroup</namespace>
     <types>
         <prevent_group_restriction/>
