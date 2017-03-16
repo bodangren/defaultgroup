@@ -1,4 +1,7 @@
 # Default Group
+Automatically add users to specified groups. It will add user to a groups on every successful login, thus ensuring every active user is processed, no matter how it was created. This behavior deals with user_external and other apps, that don’t trigger user create event and thus render hooks useless.
+
+
 Place this app in **nextcloud/apps/**
 
 ## Building the app
