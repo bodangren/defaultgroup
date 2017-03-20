@@ -18,4 +18,4 @@ This **app never remove** any user from any group, you have to do this manually.
 
 * Button to add all existing users to default groups
 
-[Issue tracker](https://github.com/Stibila/DefaultGroup/issues)
+[Issue tracker](https://github.com/Stibila/defaultgroup/issues)
