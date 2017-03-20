@@ -4,14 +4,7 @@
     <id>defaultgroup</id>
     <name>Default Group</name>
     <summary>This app will add new users to specified groups.</summary>
-    <description>
-      Automatically add users to specified groups. It will add user to a groups on every
-      successful login, thus ensuring every active user is processed, no matter how it was
-      created. This behavior deals with user_external and other apps, that don’t trigger
-      user create event and thus render hooks useless.
-      [Source code](https://github.com/Stibila/defaultgroup)
-      [Issue tracker](https://github.com/Stibila/defaultgroup/issues)
-    </description>
+    <description>Automatically add users to specified groups. It will add user to a groups on every successful login, thus ensuring every active user is processed, no matter how it was created. This behavior deals with user_external and other apps, that don’t trigger user create event and thus render hooks useless</description>
     <licence>agpl</licence>
     <author mail="nextcloud@stibila.eu" >Ján Stibila</author>
     <version>0.2.0</version>
@@ -20,6 +13,8 @@
         <prevent_group_restriction/>
     </types>
     <category>tools</category>
+    <repository type="git">https://github.com/Stibila/defaultgroup</repository>
+    <bugs>https://github.com/Stibila/defaultgroup/issues</bugs>
     <dependencies>
         <owncloud min-version="9.2"/>
         <nextcloud min-version="11" max-version="11"/>
