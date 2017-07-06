@@ -36,31 +36,36 @@ class HookManager {
     /** @var IGroupManager */
     private $groupManager;
   
-	/** @var IUserManager */
-	private $userManager;
+    /** @var IUserManager */
+    private $userManager;
 
-  	/**
-	 * Hook manager constructor.
-	 */
-	public function __construct(IUserManager $userManager, IGroupManager $groupManager,IConfig $config) {
+    /**
+     * Hook manager constructor.
+     */
+    public function __construct(IUserManager $userManager, IGroupManager $groupManager,IConfig $config) {
         $this->groupManager = $groupManager;
-		$this->userManager = $userManager;
+        $this->userManager = $userManager;
         $this->config = $config;
-	}
+    }
 
     /**
      * Connect hooks
      */
-	public function setup() {
+    public function setup()
+    {
         Util::connectHook('OC_User',
-			'post_createUser',
-			$this,
-			'postCreateUser');
+            'post_createUser',
+            $this,
+            'postCreateUser');
 
-        Util::connectHook('OC_User',
+        $loginHook = $this->config->getAppValue("DefaultGroup", "login_hook");
+        if( filter_var($loginHook, FILTER_VALIDATE_BOOLEAN) )
+        {
+            Util::connectHook('OC_User',
             'post_login',
             $this,
             'postLoginUser');
+        }
     }
 
 
@@ -70,41 +75,51 @@ class HookManager {
      *
      * @param array $params
      */
-	public function postLoginUser($params) {
+    public function postLoginUser($params)
+    {
         $groupNames = json_decode( $this->config->getAppValue("DefaultGroup", "default_groups") );
+        $ignoreGroupNames = json_decode( $this->config->getAppValue("DefaultGroup", "ignore_groups") );
 
-		$user = $this->userManager->get($params['uid']);
-        foreach($groupNames as $groupName)
+        $user = $this->userManager->get($params['uid']);
+
+        //Check if any of ignored groups
+        $userGroupsNames = array_keys( $this->groupManager->getUserGroups($user) );
+        $userInIgnoredGroups = array_intersect($ignoreGroupNames, $userGroupsNames);
+
+        if(empty($userInIgnoredGroups))
         {
-          $groups = $this->groupManager->search($groupName, $limit = null, $offset = null);
-          foreach($groups as $group)
-          {
-            if($group->getGID() === $groupName)
+            foreach($groupNames as $groupName)
             {
-              $group->addUser($user);
+                $groups = $this->groupManager->search($groupName, $limit = null, $offset = null);
+                foreach($groups as $group)
+                {
+                    if($group->getGID() === $groupName)
+                    {
+                        $group->addUser($user);
+                    }
+                }
             }
-          }
         }
     }
   
     /**
      * @param array $params
      */
-	public function postCreateUser($params) {
+    public function postCreateUser($params) {
         $groupNames = json_decode( $this->config->getAppValue("DefaultGroup", "default_groups") );
       
-		$user = $this->userManager->get($params['uid']);
-      
+        $user = $this->userManager->get($params['uid']);
+
         foreach($groupNames as $groupName)
         {
-          $groups = $this->groupManager->search($groupName, $limit = null, $offset = null);
-          foreach($groups as $group)
-          {
-            if($group->getGID() === $groupName)
+            $groups = $this->groupManager->search($groupName, $limit = null, $offset = null);
+            foreach($groups as $group)
             {
-              $group->addUser($user);
+                if($group->getGID() === $groupName)
+                {
+                    $group->addUser($user);
+                }
             }
-          }
         }
     }
 }

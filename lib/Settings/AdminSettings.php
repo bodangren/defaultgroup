@@ -47,10 +47,14 @@ class AdminSettings implements ISettings {
          * @return TemplateResponse
          */
         public function getForm() {
-                $groups = json_decode( $this->config->getAppValue("DefaultGroup", "default_groups") );
-          
+                $defaultGroups = json_decode( $this->config->getAppValue("DefaultGroup", "default_groups") );
+                $ignoreGroups = json_decode( $this->config->getAppValue("DefaultGroup", "ignore_groups") );
+                $loginHook = $this->config->getAppValue("DefaultGroup", "login_hook");
+
                 $parameters = [
-                        'default_groups' => implode('|', $groups),
+                        'default_groups' => implode('|', $defaultGroups),
+                        'ignore_groups' => implode('|', $ignoreGroups),
+                        'login_hook' => $loginHook,
                 ];
 
                 return new TemplateResponse('defaultgroup', 'admin', $parameters);

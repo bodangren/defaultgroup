@@ -13,15 +13,31 @@
  */
 
 $(document).ready(function(){
-
-  var $notificationTargetGroups = $('#default_groups');
+  var $defaultGroups = $('#defaultgroup_default_groups');
+  var $ignoreGroups = $('#defaultgroup_ignore_groups');
+  var $loginHook = $('#defaultgroup_login_hook');
   
-	OC.Settings.setupGroupsSelect($notificationTargetGroups, null, {excludeAdmins : true});
-	$notificationTargetGroups.change(function(ev) {
-		var groups = ev.val || [];
-		groups = JSON.stringify(groups);
-		OCP.AppConfig.setValue('DefaultGroup', 'default_groups', groups);
-	});
+  OC.Settings.setupGroupsSelect($defaultGroups, null, {excludeAdmins : true});
+  $defaultGroups.change(function(ev) {
+    var groups = ev.val || [];
+    groups = JSON.stringify(groups);
+    OCP.AppConfig.setValue('DefaultGroup', 'default_groups', groups);
+  });
 
-	$('#default_groups .icon-info').tooltip({placement: 'right'});
+  $('#defaultgroup_default_groups .icon-info').tooltip({placement: 'right'});
+
+  OC.Settings.setupGroupsSelect($ignoreGroups, null, {excludeAdmins : false});
+  $ignoreGroups.change(function(ev) {
+    var groups = ev.val || [];
+    groups = JSON.stringify(groups);
+    OCP.AppConfig.setValue('DefaultGroup', 'ignore_groups', groups);
+  });
+
+  $('#defaultgroup_ignore_groups .icon-info').tooltip({placement: 'right'});
+
+
+  $loginHook.change(function(ev) {
+    OCP.AppConfig.setValue('DefaultGroup', 'login_hook', this.checked);
+  });
+
 });
