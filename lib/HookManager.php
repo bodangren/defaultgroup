@@ -58,7 +58,7 @@ class HookManager {
             $this,
             'postCreateUser');
 
-        $loginHook = $this->config->getAppValue("DefaultGroup", "login_hook");
+        $loginHook = $this->config->getAppValue("DefaultGroup", "login_hook", 'false');
         if( filter_var($loginHook, FILTER_VALIDATE_BOOLEAN) )
         {
             Util::connectHook('OC_User',
@@ -77,8 +77,8 @@ class HookManager {
      */
     public function postLoginUser($params)
     {
-        $groupNames = json_decode( $this->config->getAppValue("DefaultGroup", "default_groups") );
-        $ignoreGroupNames = json_decode( $this->config->getAppValue("DefaultGroup", "ignore_groups") );
+        $groupNames = json_decode( $this->config->getAppValue("DefaultGroup", "default_groups", '[]') );
+        $ignoreGroupNames = json_decode( $this->config->getAppValue("DefaultGroup", "ignore_groups", '[]') );
 
         $user = $this->userManager->get($params['uid']);
 
@@ -106,7 +106,7 @@ class HookManager {
      * @param array $params
      */
     public function postCreateUser($params) {
-        $groupNames = json_decode( $this->config->getAppValue("DefaultGroup", "default_groups") );
+        $groupNames = json_decode( $this->config->getAppValue("DefaultGroup", "default_groups", '[]') );
       
         $user = $this->userManager->get($params['uid']);
 
